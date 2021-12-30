@@ -1,3 +1,10 @@
 body {
     background-color: yellow;
+    font-size: 24px;
+}
+
+canvas {
+    display: block;
+    border: solid black 1px;
+    margin: auto;
 }
