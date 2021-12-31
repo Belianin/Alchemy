@@ -8,3 +8,7 @@ canvas {
     border: solid black 1px;
     margin: auto;
 }
+
+p {
+    margin: 4px 4px 4px 4px;
+}

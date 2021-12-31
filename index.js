@@ -326,6 +326,15 @@ function handleMouseLeave(event) {
             if (recipe.first === selectedItem.id && recipe.second === item.id ||
                 recipe.second === selectedItem.id && recipe.first === item.id) {
 
+                if (!recipe.found) {
+                    recipe.found = true;
+
+                    const p = document.createElement("p");
+                    p.innerText = `${itemToTitle[recipe.first]} + ${itemToTitle[recipe.second]} = ${itemToTitle[recipe.result]}`
+
+                    document.getElementById("recipies").appendChild(p);
+                }
+
                 field = field.filter(i => i.isEternal || (i !== item && i !== selectedItem));
 
                 if (item.isEternal) {
