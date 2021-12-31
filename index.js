@@ -40,7 +40,22 @@ const itemToTitle = {
     "dm_wet": "Влажный Дядя Миша",
     "persimmon": "Хурма",
     "persimmon_with_ants": "Хурма с муравьями",
-    "portal": "Портвл в Ад"
+    "portal": "Портвл в Ад",
+    "wolf": "Волк",
+    "wolf_two": "Два волка",
+    "wolf_four": "Четыре волка",
+    "blob": "Blob",
+    "lobster": "Лобствер",
+    "blobster": "Блобстер",
+    "frog": "Жаба",
+    "il_blob": "Илюха Блобстер",
+    "wolfpack_1": "Дядя Миша и три волка",
+    "wolfpack_2": "Антоша, Дядя миша и два волка",
+    "wolfpack_3": "Блобстер, Антоша, Дядя миша и волк",
+    "wolfpack_4": "Стая",
+    "victory": "Победа",
+    "online_prince": "Онлайн-принц",
+    "anton_anteater": "Антоша Муравьед"
 }
 
 const recipies = [
@@ -67,7 +82,7 @@ const recipies = [
     {
         first: "dm_wet",
         second: "wind",
-        result: "dm_dead4"
+        result: "dm_dead"
     },
     {
         first: "tester",
@@ -86,7 +101,7 @@ const recipies = [
     },
     {
         first: "work",
-        second: "wind",
+        second: "water",
         result: "forest"
     },
     {
@@ -148,7 +163,82 @@ const recipies = [
         first: "dm_dead_four",
         second: "dm_dead_four",
         result: "dm_dead_eight"
-    }
+    },
+    {
+        first: "forest",
+        second: "negative",
+        result: "wolf"
+    },
+    {
+        first: "wolf",
+        second: "wolf",
+        result: "wolf_two"
+    },
+    {
+        first: "wolf_two",
+        second: "wolf_two",
+        result: "wolf_four"
+    },
+    {
+        first: "wolf_four",
+        second: "dm",
+        result: "wolfpack_1"
+    },
+    {
+        first: "wolfpack_1",
+        second: "anton_anteater",
+        result: "wolfpack_2"
+    },
+    {
+        first: "wolfpack_2",
+        second: "il_blob",
+        result: "wolfpack_3"
+    },
+    {
+        first: "wolfpack_3",
+        second: "online_prince",
+        result: "wolfpack_4"
+    },
+    {
+        first: "wolfpack_4",
+        second: "portal",
+        result: "victory"
+    },
+    {
+        first: "anton",
+        second: "persimmon_with_ants",
+        result: "anton_anteater"
+    },
+    {
+        first: "negative",
+        second: "money",
+        result: "online_prince"
+    },
+    {
+        first: "money",
+        second: "work",
+        result: "blob"
+    },
+    {
+        first: "blob",
+        second: "lobster",
+        result: "blobster"
+    },
+    {
+        first: "forest",
+        second: "water",
+        result: "frog"
+    },
+    {
+        first: "frog",
+        second: "water",
+        result: "lobster"
+    },
+    {
+        first: "blobster",
+        second: "frog",
+        result: "il_blob"
+    },
 ];
 
 const textures = {};
