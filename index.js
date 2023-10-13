@@ -241,6 +241,12 @@ const recipies = [
     },
 ];
 
+const leftRecipiesCountMap = {};
+for (let recipie of recipies) {
+    leftRecipiesCountMap[recipie.first] = leftRecipiesCountMap[recipie.first] ? leftRecipiesCountMap[recipie.first] + 1 : 1;
+    leftRecipiesCountMap[recipie.second] = leftRecipiesCountMap[recipie.second] ? leftRecipiesCountMap[recipie.second] + 1 : 1;
+}
+
 const textures = {};
 
 for (let item in itemToTitle) {
@@ -294,6 +300,8 @@ function draw() {
     for (let item of field) {
         ctx.drawImage(textures[item.id], item.x, item.y);
         ctx.fillText(itemToTitle[item.id], item.x, item.y + spriteSize + 12);
+        if (true)  
+            ctx.fillText(leftRecipiesCountMap[item.id], item.x, item.y + spriteSize + 24);
     }
 }
 
@@ -328,6 +336,8 @@ function handleMouseLeave(event) {
 
                 if (!recipe.found) {
                     recipe.found = true;
+                    leftRecipiesCountMap[recipe.first]--;
+                    leftRecipiesCountMap[recipe.second]--;
 
                     const p = document.createElement("p");
                     p.innerText = `${itemToTitle[recipe.first]} + ${itemToTitle[recipe.second]} = ${itemToTitle[recipe.result]}`
