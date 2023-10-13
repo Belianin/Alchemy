@@ -57,7 +57,7 @@ const itemToTitle = {
     "anton_anteater": "Антоша Муравьед"
 }
 
-const recipies = [
+let recipies = [
     {
         first: "negative",
         second: "work",
