@@ -241,7 +241,7 @@ const recipies = [
     },
 ];
 
-const leftRecipiesCountMap = {};
+let leftRecipiesCountMap = {};
 for (let recipie of recipies) {
     leftRecipiesCountMap[recipie.first] = leftRecipiesCountMap[recipie.first] ? leftRecipiesCountMap[recipie.first] + 1 : 1;
     leftRecipiesCountMap[recipie.second] = leftRecipiesCountMap[recipie.second] ? leftRecipiesCountMap[recipie.second] + 1 : 1;
@@ -291,6 +291,38 @@ let field = [
         startY: 400
     }
 ]
+
+const saveButton = document.getElementById('save-button');
+const loadButton = document.getElementById('load-button');
+const saveGameStorageItemName = "alchemy-save";
+
+loadButton.disabled = !window.localStorage.getItem(saveGameStorageItemName);
+
+function saveGame() {
+    const savedData = {
+        field,
+        recipies
+    };
+    window.localStorage.setItem(saveGameStorageItemName, JSON.stringify(savedData))
+    loadButton.disabled = false;
+}
+
+function loadGame() {
+    const savedData = JSON.parse(window.localStorage.getItem(saveGameStorageItemName));
+    field = savedData.field;
+    recipies = savedData.recipies
+
+    leftRecipiesCountMap = {};
+    for (let recipie of recipies) {
+        leftRecipiesCountMap[recipie.first] = leftRecipiesCountMap[recipie.first] ? leftRecipiesCountMap[recipie.first] + 1 : 1;
+        leftRecipiesCountMap[recipie.second] = leftRecipiesCountMap[recipie.second] ? leftRecipiesCountMap[recipie.second] + 1 : 1;
+    }
+}
+
+saveButton.onclick = saveGame;
+loadButton.onclick = loadGame;
+
+
 
 function draw() {
     ctx.fillStyle = 'white';
