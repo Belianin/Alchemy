@@ -1,6 +1,11 @@
 body {
-    background-color: yellow;
+    background-color: lightgoldenrodyellow;
     font-size: 24px;
+    font-family: monospace;
+}
+
+button {
+    margin: 4px;
 }
 
 canvas {
