@@ -13,7 +13,6 @@ canvas.addEventListener('mousemove', handleMove);
 canvas.addEventListener('mouseleave', handleMouseLeave);
 canvas.addEventListener('mouseup', handleMouseLeave);
 
-const canvasRect = canvas.getBoundingClientRect();
 const ctx = canvas.getContext("2d");
 
 setInterval(draw, 40)
@@ -408,6 +407,7 @@ function handleMouseLeave(event) {
 
 function handleOnClick(event) {
     const mouse = getMousePosition(event);
+    console.log(mouse);
 
     for (let item of field) {
         if (item.x <= mouse.x && item.x + spriteSize >= mouse.x &&
@@ -419,8 +419,10 @@ function handleOnClick(event) {
 }
 
 function getMousePosition(event) {
+    
+    const canvasRect = canvas.getBoundingClientRect();
     return {
-        x: event.clientX - canvasRect.x,
-        y: event.clientY - canvasRect.y
+        x: event.clientX - canvasRect.left,
+        y: event.clientY - canvasRect.top
     }
 }
