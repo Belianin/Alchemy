@@ -1,4 +1,4 @@
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 
 const width = 800;
 const height = 800;
@@ -57,7 +57,14 @@ const itemToTitle = {
     "anton_anteater": "Антоша Муравьед"
 }
 
-let recipies = [
+type Recipie = {
+    first: string,
+    second: string,
+    result: string,
+    found?: boolean
+}
+
+let recipies: Recipie[] = [
     {
         first: "negative",
         second: "work",
@@ -256,7 +263,16 @@ for (let item in itemToTitle) {
     textures[item] = image;
 }
 
-let field = [
+type Item = {
+    x: number,
+    y: number,
+    id: string,
+    isEternal?: boolean,
+    startX?: number,
+    startY?: number
+}
+
+let field: Item[] = [
     {
         x: 200,
         y: 400,
@@ -291,8 +307,8 @@ let field = [
     }
 ]
 
-const saveButton = document.getElementById('save-button');
-const loadButton = document.getElementById('load-button');
+const saveButton = document.getElementById('save-button') as HTMLButtonElement;
+const loadButton = document.getElementById('load-button') as HTMLButtonElement;
 const saveGameStorageItemName = "alchemy-save";
 
 loadButton.disabled = !window.localStorage.getItem(saveGameStorageItemName);
@@ -338,7 +354,7 @@ function draw() {
 
 let selectedItem = null;
 
-function handleMove(event) {
+function handleMove(event: MouseEvent) {
     if (!selectedItem)
         return;
 
@@ -347,7 +363,7 @@ function handleMove(event) {
     selectedItem.y = mouse.y - spriteSize / 2;
 }
 
-function handleMouseLeave(event) {
+function handleMouseLeave(event: MouseEvent) {
     if (!selectedItem)
         return;
 
@@ -405,7 +421,7 @@ function handleMouseLeave(event) {
     selectedItem = null;
 }
 
-function handleOnClick(event) {
+function handleOnClick(event: MouseEvent) {
     const mouse = getMousePosition(event);
     console.log(mouse);
 
@@ -418,7 +434,7 @@ function handleOnClick(event) {
     }
 }
 
-function getMousePosition(event) {
+function getMousePosition(event: MouseEvent) {
     
     const canvasRect = canvas.getBoundingClientRect();
     return {
