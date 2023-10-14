@@ -23,6 +23,7 @@ class Game implements IGame {
     private ctx: CanvasRenderingContext2D
     private selectedItem: Item | null
     private leftRecipiesCountMap: Record<string, number>
+    private tick: number;
 
     constructor() {
         this.field = [];
@@ -36,6 +37,7 @@ class Game implements IGame {
         canvas.addEventListener('mouseup', this.handleMouseLeave.bind(this));
 
         this.ctx = canvas.getContext("2d");
+        this.tick = 0;
 
         setInterval(this.draw.bind(this), 40)
     }
@@ -54,15 +56,20 @@ class Game implements IGame {
     }
 
     draw() {
+        this.tick = (this.tick + 1) % 100;
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(0, 0, width, width);
     
         this.ctx.fillStyle = 'black';
         for (let item of this.field) {
-            this.ctx.drawImage(textures[item.id], item.x, item.y);
+            const texture = textures[item.id];
+            const resultTexture = Array.isArray(texture)
+                ? texture[Math.floor(this.tick * 0.2) % texture.length]
+                : texture;
+            this.ctx.drawImage(resultTexture, item.x, item.y);
             this.ctx.fillText(itemToTitle[item.id], item.x, item.y + spriteSize + 12);
             if (true)  
-                this.ctx.fillText(this.leftRecipiesCountMap[item.id].toString(), item.x, item.y + spriteSize + 24);
+                this.ctx.fillText((this.leftRecipiesCountMap[item.id] || 0).toString(), item.x, item.y + spriteSize + 24);
         }
     }
 
