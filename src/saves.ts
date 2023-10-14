@@ -3,7 +3,7 @@ import { Item, Recipie } from "./data";
 
 type SavedData = {
     fields: Item[],
-    recipies: Recipie[]
+    found: string[]
 }
 
 export function initSaves(game: IGame) {
@@ -16,7 +16,7 @@ export function initSaves(game: IGame) {
     function saveGame() {
         const savedData: SavedData = {
             fields: game.field,
-            recipies: game.recipies
+            found: [...game.found]
         };
         window.localStorage.setItem(saveGameStorageItemName, JSON.stringify(savedData))
         loadButton.disabled = false;
@@ -25,9 +25,9 @@ export function initSaves(game: IGame) {
     function loadGame() {
         const savedData = JSON.parse(window.localStorage.getItem(saveGameStorageItemName)) as SavedData;
         const field = savedData.fields;
-        const recipies = savedData.recipies
+        const found = new Set<string>(savedData.found)
         
-        game.load(recipies, field)
+        game.load(field, found)
     }
 
     saveButton.onclick = saveGame;

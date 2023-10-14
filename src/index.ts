@@ -14,22 +14,25 @@ const spriteSize = 64;
 export interface IGame {
     field: Item[],
     recipies: Recipie[],
-    load(recipies: Recipie[], items: Item[]): void
+    found: Set<string>,
+    load(items: Item[], found: Set<string>): void
 }
 
 class Game implements IGame {
     field: Item[];
     recipies: Recipie[];
+    found: Set<string>;
     private ctx: CanvasRenderingContext2D
     private selectedItem: Item | null
     private leftRecipiesCountMap: Record<string, number>
     private tick: number;
 
-    constructor() {
+    constructor(recipies: Recipie[]) {
         this.field = [];
-        this.recipies = [];
+        this.recipies = recipies;
         this.selectedItem = null;
         this.leftRecipiesCountMap = {};
+        this.found = new Set<string>();
         
         canvas.addEventListener('mousedown', this.handleOnClick.bind(this));
         canvas.addEventListener('mousemove', this.handleMove.bind(this));
@@ -42,16 +45,27 @@ class Game implements IGame {
         setInterval(this.draw.bind(this), 40)
     }
 
-    load(recipies: Recipie[], items: Item[]) {
+    load(items: Item[], found: Set<string>) {
         console.log('Loaded')
         console.log(items)
         this.field = items;
-        this.recipies = recipies;
+        this.found = found;
 
         this.leftRecipiesCountMap = {};
-        for (let recipie of recipies) {
+        for (let recipie of this.recipies) {
             this.leftRecipiesCountMap[recipie.first] = this.leftRecipiesCountMap[recipie.first] ? this.leftRecipiesCountMap[recipie.first] + 1 : 1;
             this.leftRecipiesCountMap[recipie.second] = this.leftRecipiesCountMap[recipie.second] ? this.leftRecipiesCountMap[recipie.second] + 1 : 1;
+        }
+        for (let foundItem of found) {
+            const recipie = this.recipies.find(x => x.result === foundItem);
+            this.leftRecipiesCountMap[recipie.first]--;
+            this.leftRecipiesCountMap[recipie.second]--;
+
+            
+            const p = document.createElement("p");
+            p.innerText = `${itemToTitle[recipie.first]} + ${itemToTitle[recipie.second]} = ${itemToTitle[recipie.result]}`
+
+            document.getElementById("recipies").appendChild(p);
         }
     }
 
@@ -100,8 +114,8 @@ class Game implements IGame {
                 if (recipe.first === this.selectedItem.id && recipe.second === item.id ||
                     recipe.second === this.selectedItem.id && recipe.first === item.id) {
     
-                    if (!recipe.found) {
-                        recipe.found = true;
+                    if (!this.found.has(recipe.result)) {
+                        this.found.add(recipe.result);
                         this.leftRecipiesCountMap[recipe.first]--;
                         this.leftRecipiesCountMap[recipe.second]--;
     
@@ -163,6 +177,6 @@ class Game implements IGame {
     }
 }
 
-export const game = new Game();
-game.load(initialRecipies, initialField);
+export const game = new Game(initialRecipies);
+game.load(initialField, new Set<string>());
 initSaves(game);

@@ -150,8 +150,7 @@ export const initialField: Item[] = [
 export type Recipie = {
     first: string,
     second: string,
-    result: string,
-    found?: boolean
+    result: string
 }
 
 export const recipies: Recipie[] = [
