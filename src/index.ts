@@ -50,6 +50,10 @@ class Game implements IGame {
         canvas.addEventListener('mousemove', this.handleMove.bind(this));
         canvas.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
         canvas.addEventListener('mouseup', this.handleMouseLeave.bind(this));
+        
+        canvas.addEventListener('touchstart', this.handleOnTouch.bind(this));
+        canvas.addEventListener('touchmove', this.handleTouchMove.bind(this));
+        canvas.addEventListener('touchend', this.handleMouseLeave.bind(this));
 
         this.ctx = canvas.getContext("2d");
         this.tick = 0;
@@ -104,6 +108,15 @@ class Game implements IGame {
             return;
     
         const mouse = this.getMousePosition(event);
+        this.selectedItem.x = mouse.x - spriteSize / 2;
+        this.selectedItem.y = mouse.y - spriteSize / 2;
+    }
+
+    handleTouchMove(event: TouchEvent) {
+        if (!this.selectedItem)
+            return;
+    
+        const mouse = this.getTouchPosition(event);
         this.selectedItem.x = mouse.x - spriteSize / 2;
         this.selectedItem.y = mouse.y - spriteSize / 2;
     }
@@ -178,7 +191,29 @@ class Game implements IGame {
             }
         }
     }
+
+    handleOnTouch(event: TouchEvent) {
+        const mouse = this.getTouchPosition(event);
+        console.log(mouse);
     
+        for (let item of this.field) {
+            if (item.x <= mouse.x && item.x + spriteSize >= mouse.x &&
+                item.y <= mouse.y && item.y + spriteSize >= mouse.y) {
+                    this.selectedItem = item;
+                break;
+            }
+        }
+    }
+    
+    getTouchPosition(event: TouchEvent) {
+        
+        const canvasRect = canvas.getBoundingClientRect();
+        return {
+            x: event.touches[0].clientX - canvasRect.left,
+            y: event.touches[0].clientY - canvasRect.top
+        }
+    }
+
     getMousePosition(event: MouseEvent) {
         
         const canvasRect = canvas.getBoundingClientRect();
