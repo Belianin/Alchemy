@@ -9,6 +9,18 @@ const height = 800;
 canvas.width = width;
 canvas.height = height;
 
+let showKnown = false;
+
+const showLeftInput = document.getElementById('show-count-left') as HTMLInputElement;
+const showKnownInput = document.getElementById('show-known') as HTMLInputElement;
+
+showKnownInput.onchange = e => {
+    const knownElement = document.getElementById('recipies');
+    knownElement.hidden = !((e.target as any).checked as boolean)
+}
+showLeftInput.onchange = e => showKnown = ((e.target as any).checked as boolean)
+document.getElementById('recipies').hidden = true;
+
 const spriteSize = 64;
 
 export interface IGame {
@@ -82,7 +94,7 @@ class Game implements IGame {
                 : texture;
             this.ctx.drawImage(resultTexture, item.x, item.y);
             this.ctx.fillText(itemToTitle[item.id], item.x, item.y + spriteSize + 12);
-            if (true)  
+            if (showKnown)  
                 this.ctx.fillText((this.leftRecipiesCountMap[item.id] || 0).toString(), item.x, item.y + spriteSize + 24);
         }
     }
