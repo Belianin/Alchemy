@@ -40,6 +40,7 @@ function discoverElement(name: string, onclick: (name: string) => void) {
     text.style.fontSize = '12px'
     result.appendChild(text)
     result.onclick = () => onclick(name);
+    result.ontouchstart = () => onclick(name);
 
     knownElements.appendChild(result);
 }
@@ -266,3 +267,5 @@ class Game implements IGame {
 export const game = new Game(initialRecipies);
 game.load(initialField, new Set<string>());
 initSaves(game);
+
+document.getElementById('clear-button').onclick = () => game.field = [];
