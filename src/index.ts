@@ -21,6 +21,39 @@ showKnownInput.onchange = e => {
 showLeftInput.onchange = e => showKnown = ((e.target as any).checked as boolean)
 document.getElementById('recipies').hidden = true;
 
+const knownElements = document.getElementById('found-element');
+
+function discoverElement(name: string, onclick: (name: string) => void) {
+
+    const result = document.createElement('div');;
+    result.style.position = 'relative'
+
+    const image = createElementImage(name);
+    image.style.width = `${spriteSize}px`;
+    image.style.height = `${spriteSize}px`;
+    result.appendChild(image)
+
+    const text = document.createElement('span');
+    text.innerText = itemToTitle[name];
+    text.style.position = 'absolute'
+    text.style.left = '0'
+    text.style.top = `${spriteSize}px`;
+    text.style.fontSize = '12px'
+    result.appendChild(text)
+    result.onclick = () => onclick(name);
+
+    knownElements.appendChild(result);
+}
+
+function createElementImage(name: string): HTMLElement {
+
+    const result = textures[name];
+    if (Array.isArray(result))
+        return result[0];
+
+    return result;
+}
+
 const spriteSize = 64;
 
 export interface IGame {
@@ -61,6 +94,32 @@ class Game implements IGame {
         setInterval(this.draw.bind(this), 40)
     }
 
+    spawnElement(element: string) {
+        const x = Math.random() * (width - spriteSize);
+        const y = Math.random() * (height - spriteSize);
+
+        this.field.push({
+            id: element,
+            x,
+            y,
+        })
+    }
+
+    discoverRecpie(name: string) {
+        
+        const recipie = this.recipies.find(x => x.result === name);
+        this.leftRecipiesCountMap[recipie.first]--;
+        if (recipie.first !== recipie.second)
+            this.leftRecipiesCountMap[recipie.second]--;
+
+        discoverElement(name, this.spawnElement.bind(this));
+
+        const p = document.createElement("p");
+        p.innerText = `${itemToTitle[recipie.first]} + ${itemToTitle[recipie.second]} = ${itemToTitle[recipie.result]}`
+
+        document.getElementById("recipies").appendChild(p);
+    }
+
     load(items: Item[], found: Set<string>) {
         console.log('Loaded')
         console.log(items)
@@ -73,16 +132,13 @@ class Game implements IGame {
             this.leftRecipiesCountMap[recipie.second] = this.leftRecipiesCountMap[recipie.second] ? this.leftRecipiesCountMap[recipie.second] + 1 : 1;
         }
         for (let foundItem of found) {
-            const recipie = this.recipies.find(x => x.result === foundItem);
-            this.leftRecipiesCountMap[recipie.first]--;
-            this.leftRecipiesCountMap[recipie.second]--;
-
-            
-            const p = document.createElement("p");
-            p.innerText = `${itemToTitle[recipie.first]} + ${itemToTitle[recipie.second]} = ${itemToTitle[recipie.result]}`
-
-            document.getElementById("recipies").appendChild(p);
+            this.discoverRecpie(foundItem)
         }
+
+        discoverElement('water', this.spawnElement.bind(this));
+        discoverElement('wind', this.spawnElement.bind(this));
+        discoverElement('negative', this.spawnElement.bind(this));
+        discoverElement('work', this.spawnElement.bind(this));
     }
 
     draw() {
@@ -121,7 +177,7 @@ class Game implements IGame {
         this.selectedItem.y = mouse.y - spriteSize / 2;
     }
     
-    handleMouseLeave(event: MouseEvent) {
+    handleMouseLeave() {
         if (!this.selectedItem)
             return;
     
@@ -141,13 +197,7 @@ class Game implements IGame {
     
                     if (!this.found.has(recipe.result)) {
                         this.found.add(recipe.result);
-                        this.leftRecipiesCountMap[recipe.first]--;
-                        this.leftRecipiesCountMap[recipe.second]--;
-    
-                        const p = document.createElement("p");
-                        p.innerText = `${itemToTitle[recipe.first]} + ${itemToTitle[recipe.second]} = ${itemToTitle[recipe.result]}`
-    
-                        document.getElementById("recipies").appendChild(p);
+                        this.discoverRecpie(recipe.result)
                     }
     
                     this.field = this.field.filter(i => i.isEternal || (i !== item && i !== this.selectedItem));

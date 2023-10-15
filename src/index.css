@@ -17,3 +17,7 @@ canvas {
 p {
     margin: 4px 4px 4px 4px;
 }
+
+.main-flex {
+    display: flex;
+}
