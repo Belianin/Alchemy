@@ -106,44 +106,29 @@ for (let item in itemToTitle) {
 export type Item = {
     x: number,
     y: number,
-    id: string,
-    isEternal?: boolean,
-    startX?: number,
-    startY?: number
+    id: string
 }
 
 export const initialField: Item[] = [
     {
         x: 200,
         y: 400,
-        id: "water",
-        isEternal: true,
-        startX: 200,
-        startY: 400
+        id: "water"
     },
     {
         x: 300,
         y: 400,
-        id: "wind",
-        isEternal: true,
-        startX: 300,
-        startY: 400
+        id: "wind"
     },
     {
         x: 400,
         y: 400,
-        id: "negative",
-        isEternal: true,
-        startX: 400,
-        startY: 400
+        id: "negative"
     },
     {
         x: 500,
         y: 400,
-        id: "work",
-        isEternal: true,
-        startX: 500,
-        startY: 400
+        id: "work"
     }
 ]
 

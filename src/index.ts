@@ -12,14 +12,13 @@ canvas.height = height;
 let showKnown = false;
 
 const showLeftInput = document.getElementById('show-count-left') as HTMLInputElement;
-const showKnownInput = document.getElementById('show-known') as HTMLInputElement;
+// const showKnownInput = document.getElementById('show-known') as HTMLInputElement;
 
-showKnownInput.onchange = e => {
-    const knownElement = document.getElementById('recipies');
-    knownElement.hidden = !((e.target as any).checked as boolean)
-}
+// showKnownInput.onchange = e => {
+//     const knownElement = document.getElementById('recipies');
+//     knownElement.hidden = !((e.target as any).checked as boolean)
+// }
 showLeftInput.onchange = e => showKnown = ((e.target as any).checked as boolean)
-document.getElementById('recipies').hidden = true;
 
 const knownElements = document.getElementById('found-element');
 
@@ -131,14 +130,16 @@ class Game implements IGame {
             this.leftRecipiesCountMap[recipie.first] = this.leftRecipiesCountMap[recipie.first] ? this.leftRecipiesCountMap[recipie.first] + 1 : 1;
             this.leftRecipiesCountMap[recipie.second] = this.leftRecipiesCountMap[recipie.second] ? this.leftRecipiesCountMap[recipie.second] + 1 : 1;
         }
-        for (let foundItem of found) {
-            this.discoverRecpie(foundItem)
-        }
 
         discoverElement('water', this.spawnElement.bind(this));
         discoverElement('wind', this.spawnElement.bind(this));
         discoverElement('negative', this.spawnElement.bind(this));
         discoverElement('work', this.spawnElement.bind(this));
+
+        for (let foundItem of found) {
+            this.discoverRecpie(foundItem)
+        }
+
     }
 
     draw() {
@@ -200,32 +201,20 @@ class Game implements IGame {
                         this.discoverRecpie(recipe.result)
                     }
     
-                    this.field = this.field.filter(i => i.isEternal || (i !== item && i !== this.selectedItem));
+                    this.field = this.field.filter(i => i !== item && i !== this.selectedItem);
     
-                    if (item.isEternal) {
-                        this.field.push({
-                            x: item.x,
-                            y: item.y - spriteSize - 16,
-                            id: recipe.result
-                        })
-                    }
-                    else {
-                        this.field.push({
-                            x: this.selectedItem.x,
-                            y: this.selectedItem.y,
-                            id: recipe.result
-                        })
-                    }
+                    this.field.push({
+                        x: this.selectedItem.x,
+                        y: this.selectedItem.y,
+                        id: recipe.result
+                    })
+                    
     
                     break craft_search;
                 }
             }
         }
     
-        if (this.selectedItem.isEternal) {
-            this.selectedItem.x = this.selectedItem.startX;
-            this.selectedItem.y = this.selectedItem.startY;
-        }
         this.selectedItem = null;
     }
     
