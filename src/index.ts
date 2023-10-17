@@ -63,6 +63,11 @@ export interface IGame {
     load(items: Item[], found: Set<string>): void
 }
 
+interface Position {
+    clientX: number,
+    clientY: number
+}
+
 class Game implements IGame {
     field: Item[];
     recipies: Recipie[];
@@ -80,7 +85,7 @@ class Game implements IGame {
         this.found = new Set<string>();
         
         canvas.addEventListener('mousedown', this.handleOnClick.bind(this));
-        canvas.addEventListener('mousemove', this.handleMove.bind(this));
+        canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
         canvas.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
         canvas.addEventListener('mouseup', this.handleMouseLeave.bind(this));
         
@@ -150,35 +155,54 @@ class Game implements IGame {
     
         this.ctx.fillStyle = 'black';
         for (let item of this.field) {
+
             const texture = textures[item.id];
             const resultTexture = Array.isArray(texture)
                 ? texture[Math.floor(this.tick * 0.2) % texture.length]
                 : texture;
+
+            //const dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1];;
+            //const s = 2;  // thickness scale
+            
+            // draw images at offsets from the array scaled by s
+            //for(let i = 0; i < dArr.length; i += 2)
+            //  this.ctx.drawImage(resultTexture, item.x + dArr[i] * s, item.y + dArr[i+1]*s);
+            
+            // fill with color
+            //this.ctx.globalCompositeOperation = "source-in";
+            //this.ctx.fillStyle = "red";
+            //this.ctx.fillRect(item.x - s, item.y  - s, spriteSize + s + s, spriteSize + s + s);
+            
+            // // draw original image in normal mode
+            //this.ctx.globalCompositeOperation = "source-over";
+            //ctx.drawImage(img, x, y);
+
+
             this.ctx.drawImage(resultTexture, item.x, item.y);
             this.ctx.fillText(itemToTitle[item.id], item.x, item.y + spriteSize + 12);
             if (showKnown)  
                 this.ctx.fillText((this.leftRecipiesCountMap[item.id] || 0).toString(), item.x, item.y + spriteSize + 24);
+
         }
     }
 
-    handleMove(event: MouseEvent) {
+    handleMouseMove(event: MouseEvent) {
+        this.handleMove(event);
+    }
+
+    handleTouchMove(event: TouchEvent) {
+        this.handleMove(event.touches[0]);
+    }
+
+    handleMove(pos: Position) {
         if (!this.selectedItem)
             return;
     
-        const mouse = this.getMousePosition(event);
+        const mouse = this.getMousePosition(pos);
         this.selectedItem.x = mouse.x - spriteSize / 2;
         this.selectedItem.y = mouse.y - spriteSize / 2;
     }
 
-    handleTouchMove(event: TouchEvent) {
-        if (!this.selectedItem)
-            return;
-    
-        const mouse = this.getTouchPosition(event);
-        this.selectedItem.x = mouse.x - spriteSize / 2;
-        this.selectedItem.y = mouse.y - spriteSize / 2;
-    }
-    
     handleMouseLeave() {
         if (!this.selectedItem)
             return;
@@ -220,20 +244,15 @@ class Game implements IGame {
     }
     
     handleOnClick(event: MouseEvent) {
-        const mouse = this.getMousePosition(event);
-        console.log(mouse);
-    
-        for (let item of this.field) {
-            if (item.x <= mouse.x && item.x + spriteSize >= mouse.x &&
-                item.y <= mouse.y && item.y + spriteSize >= mouse.y) {
-                    this.selectedItem = item;
-                break;
-            }
-        }
+        this.handleClick(event);
     }
 
     handleOnTouch(event: TouchEvent) {
-        const mouse = this.getTouchPosition(event);
+        this.handleClick(event.touches[0]);
+    }
+    
+    handleClick(pos: Position) {
+        const mouse = this.getMousePosition(pos);
         console.log(mouse);
     
         for (let item of this.field) {
@@ -244,17 +263,8 @@ class Game implements IGame {
             }
         }
     }
-    
-    getTouchPosition(event: TouchEvent) {
-        
-        const canvasRect = canvas.getBoundingClientRect();
-        return {
-            x: event.touches[0].clientX - canvasRect.left,
-            y: event.touches[0].clientY - canvasRect.top
-        }
-    }
 
-    getMousePosition(event: MouseEvent) {
+    getMousePosition(event: Position) {
         
         const canvasRect = canvas.getBoundingClientRect();
         return {
