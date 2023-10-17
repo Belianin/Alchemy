@@ -161,23 +161,6 @@ class Game implements IGame {
                 ? texture[Math.floor(this.tick * 0.2) % texture.length]
                 : texture;
 
-            //const dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1];;
-            //const s = 2;  // thickness scale
-            
-            // draw images at offsets from the array scaled by s
-            //for(let i = 0; i < dArr.length; i += 2)
-            //  this.ctx.drawImage(resultTexture, item.x + dArr[i] * s, item.y + dArr[i+1]*s);
-            
-            // fill with color
-            //this.ctx.globalCompositeOperation = "source-in";
-            //this.ctx.fillStyle = "red";
-            //this.ctx.fillRect(item.x - s, item.y  - s, spriteSize + s + s, spriteSize + s + s);
-            
-            // // draw original image in normal mode
-            //this.ctx.globalCompositeOperation = "source-over";
-            //ctx.drawImage(img, x, y);
-
-
             this.ctx.drawImage(resultTexture, item.x, item.y);
             this.ctx.fillText(itemToTitle[item.id], item.x, item.y + spriteSize + 12);
             if (showKnown)  
@@ -198,7 +181,7 @@ class Game implements IGame {
         if (!this.selectedItem)
             return;
     
-        const mouse = this.getMousePosition(pos);
+        const mouse = this.getPosition(pos);
         this.selectedItem.x = mouse.x - spriteSize / 2;
         this.selectedItem.y = mouse.y - spriteSize / 2;
     }
@@ -252,7 +235,7 @@ class Game implements IGame {
     }
     
     handleClick(pos: Position) {
-        const mouse = this.getMousePosition(pos);
+        const mouse = this.getPosition(pos);
         console.log(mouse);
     
         for (let item of this.field) {
@@ -264,8 +247,7 @@ class Game implements IGame {
         }
     }
 
-    getMousePosition(event: Position) {
-        
+    getPosition(event: Position) {
         const canvasRect = canvas.getBoundingClientRect();
         return {
             x: event.clientX - canvasRect.left,
