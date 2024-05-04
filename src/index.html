@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <link href="./index.css" rel="stylesheet">
-    <title>Wolfchemy</title>
+  <meta charset="UTF-8">
+  <link href="./index.css" rel="stylesheet">
+  <title>Wolfchemy</title>
 </head>
+
 <body>
-    <h1>Kovalets's Wolfchemy</h1>
-    <p>Устройте сражение стаи со злом, некромантия пригодится</p>
-    <input type="checkbox" id="show-count-left">Показывать количество неоткрытых рецептов</input>
-    <br/>
-    <button id="save-button">Save</button><button id="load-button" disabled>Load</button><button id="clear-button">Clear field</button>
-    <div class="main-flex">
-      <div fle id="found-element" style="display: flex; flex-wrap: wrap; align-content: start; flex: 1;"></div>
-      <canvas id="canvas" stlye=" flex: 1;"></canvas>
-      <div id="recipies" style="font-size: 14px; background-color: white; flex: 1;"></div>
+  <div>
+    <div>
+      <h1>Kovalets's Wolfchemy</h1>
+      <p class="prev-goal">Отправьте вольчю стаю в ад</p>
+      <p class="prev-goal">Устройте сражение стаи со злом, некромантия пригодится</p>
+      <p>Создайте темную вселенную</p>
+      <!-- <input type="checkbox" id="show-count-left">Облегченный режим</input>
+      <br /> -->
+      <button id="save-button">Save</button>
+      <button id="load-button" disabled>Load</button>
+      <button id="clear-button">Clear field</button>
     </div>
+    <div class="main-flex">
+      <div id="found-element" class="found-elements"></div>
+      <canvas id="canvas" stlye=" flex: 1;"></canvas>
+      <div id="recipies" class="found-recpts"></div>
+    </div>
+  </div>
+  </div>
+  <!-- <div style="width: 1200px; height: 1200px; border: 1px solid black" id="graph"></div> -->
   <script src="index.js"></script>
 </body>
+
 </html>

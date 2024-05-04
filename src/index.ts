@@ -1,5 +1,6 @@
-import { Item, Recipie, initialField, recipies as initialRecipies, itemToTitle, textures } from './data';
+import { Item, Recipie, initialField, recipies as initialRecipies, itemToTitle, recipies, textures } from './data';
 import { initSaves } from './saves';
+//import Viva from './vivagraph'
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 
@@ -9,16 +10,18 @@ const height = 800;
 canvas.width = width;
 canvas.height = height;
 
-let showKnown = false;
+let showKnown = true;
 
-const showLeftInput = document.getElementById('show-count-left') as HTMLInputElement;
+// const showLeftInput = document.getElementById('show-count-left') as HTMLInputElement;
 // const showKnownInput = document.getElementById('show-known') as HTMLInputElement;
 
 // showKnownInput.onchange = e => {
 //     const knownElement = document.getElementById('recipies');
 //     knownElement.hidden = !((e.target as any).checked as boolean)
 // }
-showLeftInput.onchange = e => showKnown = ((e.target as any).checked as boolean)
+// showLeftInput.onchange = e => {
+//     showKnown = (e.target as any).checked as boolean
+// }
 
 const knownElements = document.getElementById('found-element');
 
@@ -28,6 +31,7 @@ function discoverElement(name: string, onclick: (name: string) => void) {
     result.style.position = 'relative'
 
     const image = createElementImage(name);
+    image.id = `${name}_img`;
     image.style.width = `${spriteSize}px`;
     image.style.height = `${spriteSize}px`;
     result.appendChild(image)
@@ -94,6 +98,7 @@ class Game implements IGame {
         canvas.addEventListener('touchend', this.handleMouseLeave.bind(this));
 
         this.ctx = canvas.getContext("2d");
+        this.ctx.imageSmoothingEnabled = false
         this.tick = 0;
 
         setInterval(this.draw.bind(this), 40)
@@ -112,17 +117,28 @@ class Game implements IGame {
 
     discoverRecpie(name: string) {
         
+        discoverElement(name, this.spawnElement.bind(this));
+
         const recipie = this.recipies.find(x => x.result === name);
         this.leftRecipiesCountMap[recipie.first]--;
         if (recipie.first !== recipie.second)
             this.leftRecipiesCountMap[recipie.second]--;
 
-        discoverElement(name, this.spawnElement.bind(this));
+        if (showKnown) {
+            if (this.leftRecipiesCountMap[recipie.first] === 0 && document.getElementById(`${recipie.first}_img`))
+                document.getElementById(`${recipie.first}_img`).style.opacity = '0.2';
+            if (this.leftRecipiesCountMap[recipie.second] === 0 && document.getElementById(`${recipie.second}_img`))
+                document.getElementById(`${recipie.second}_img`).style.opacity = '0.2';
+        }
 
         const p = document.createElement("p");
         p.innerText = `${itemToTitle[recipie.first]} + ${itemToTitle[recipie.second]} = ${itemToTitle[recipie.result]}`
 
         document.getElementById("recipies").appendChild(p);
+
+        // graph.addNode(recipie.result, {url : `/images/${recipie.result}.png`})
+        // graph.addLink(recipie.first, recipie.result)
+        // graph.addLink(recipie.second, recipie.result)
     }
 
     load(items: Item[], found: Set<string>) {
@@ -133,8 +149,12 @@ class Game implements IGame {
 
         this.leftRecipiesCountMap = {};
         for (let recipie of this.recipies) {
-            this.leftRecipiesCountMap[recipie.first] = this.leftRecipiesCountMap[recipie.first] ? this.leftRecipiesCountMap[recipie.first] + 1 : 1;
-            this.leftRecipiesCountMap[recipie.second] = this.leftRecipiesCountMap[recipie.second] ? this.leftRecipiesCountMap[recipie.second] + 1 : 1;
+            if (recipie.first === recipie.second) // todo property isDouble?
+                this.leftRecipiesCountMap[recipie.first] = this.leftRecipiesCountMap[recipie.first] ? this.leftRecipiesCountMap[recipie.first] + 1 : 1;
+            else {
+                this.leftRecipiesCountMap[recipie.first] = this.leftRecipiesCountMap[recipie.first] ? this.leftRecipiesCountMap[recipie.first] + 1 : 1;
+                this.leftRecipiesCountMap[recipie.second] = this.leftRecipiesCountMap[recipie.second] ? this.leftRecipiesCountMap[recipie.second] + 1 : 1;
+            }
         }
 
         discoverElement('water', this.spawnElement.bind(this));
@@ -257,7 +277,49 @@ class Game implements IGame {
 }
 
 export const game = new Game(initialRecipies);
+(window as any).game = game;
 game.load(initialField, new Set<string>());
 initSaves(game);
 
 document.getElementById('clear-button').onclick = () => game.field = [];
+
+// var graph = Viva.Graph.graph();
+
+// graph.addNode('water', {url : `/images/water.png`})
+// graph.addNode('wind', {url : `/images/wind.png`})
+// graph.addNode('negative', {url : `/images/negative_0.png`})
+// graph.addNode('work', {url : `/images/work.png`})
+
+// // for (let recipe of recipies) {
+// //     graph.addNode(recipe.result, {url : `/images/${recipe.result}.png`})
+// //     graph.addLink(recipe.first, recipe.result)
+// //     graph.addLink(recipe.second, recipe.result)
+// // }
+ 
+// var graphics = Viva.Graph.View.svgGraphics();
+// graphics.node(function(node) {
+//        // The function is called every time renderer needs a ui to display node
+//         if (node?.data?.url)
+//             return Viva.Graph.svg('image')
+//                     .attr('width', 64)
+//                     .attr('height', 64)
+//                     .link(node.data.url); // node.data holds custom object passed to graph.addNode();
+//         return Viva.Graph.svg('image')
+//         .attr('width', 64)
+//         .attr('height', 64)
+//         .color('red')
+//     });
+
+// var layout = Viva.Graph.Layout.forceDirected(graph, {
+//     springLength : 200,
+//     springCoeff : 0.0005,
+//     dragCoeff : 0.02,
+//     gravity : -4.0
+//     });
+// // specify where it should be rendered:
+// var renderer = Viva.Graph.View.renderer(graph, {
+//   container: document.getElementById('graph'),
+//   graphics,
+//   layout
+// });
+// renderer.run()

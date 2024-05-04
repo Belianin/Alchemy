@@ -1,5 +1,5 @@
 
-export const itemToTitle: Record<string, string> = {
+export const itemToTitle = {
     "forest": "Лес",
     "negative": "Негатив",
     "work": "Работа",
@@ -29,7 +29,12 @@ export const itemToTitle: Record<string, string> = {
     "lobster": "Лобствер",
     "blobster": "Блобстер",
     "frog": "Жаба",
+    "il": "Илюша",
+    "il_sleep": "Илюша спит",
     "il_blob": "Илюха Блобстер",
+    "dream": "Сон",
+    "hot_sause": "Острый соус",
+    "nightmare_potion": "Зелье кошмаров",
     "wolfpack_1": "Дядя Миша и три волка",
     "wolfpack_2": "Антоша, Дядя миша и два волка",
     "wolfpack_3": "Блобстер, Антоша, Дядя миша и волк",
@@ -71,8 +76,63 @@ export const itemToTitle: Record<string, string> = {
     "much_money": "Много денег",
     "cross": "Крест",
     "crusader": "Крестоносец",
-    "ogr": "Огрызок"
-}
+    "ogr": "Огрызок",
+    // budh
+    "balance": "Баланс",
+    "positive": "Позитив",
+    // perm
+    "tea_goblin": "Чайный гоблин",
+    "universe": "Вселенная",
+    "tulpa": "Тульпа",
+    "soul": "Душа",
+    "ears": "Уши!",
+    "dm_with_tea": "ДМ с чаем",
+    "cups_of_tea": "Много чая",
+    "cup_of_tea": "Кружка чая",
+    "cup_of_water": "Кружка воды",
+    "cup": "Кружка",
+    "panama": "Панама",
+    "perm_pasport": "Паспорт пермяка",
+    "tea": "Чай",
+    "mountains": "Горы",
+    "nagorny": "Нагорный",
+    "real_work": "Настоящая работа",
+    "stones": "Камни",
+    "hammer": "Молоток",
+    "booblic_with_ears": 'Бублик с ушами',
+    // fantasy,
+    "tire": 'Колесо',
+    "minecraft": "Майнкрафт",
+    "castle": "Замок",
+    "tire_keeper": "Хранитель Диска",
+    "tavern": "Таверна",
+    "mine": "Шахта",
+    "buddha": "Будда",
+    "fingerprint": "Отпечаток",
+    "police": "Полиция",
+    "penalty": "Штраф",
+    "few_money": "Мало денег",
+    "mashed_apple": 'Яблоко всмятку',
+    "pie": 'Пирог',
+    "tea_with_pie": "Чай с пирогами",
+    "music": 'Музыка',
+    "rep": "Репбаза",
+    "rep_people": "Люди на репбазе",
+    "band": "Группа",
+    "pchsp": "Настоящая группа",
+    "3-7": "Три топора",
+    "1": "1",
+    "4": "4",
+    "4+": "4+",
+    "4-": "4-",
+    "3": "3",
+    "33": "33",
+    "7": "7",
+    "77": "77",
+    "3-in-line": "Три-в-ряд",
+    "dark_fantasy": "Тёмное фентези",
+    "fantasy": "Фентези",
+} as const
 
 const itemToAnimationFrameCount: Record<string, number> = {
     "negative": 4,
@@ -133,9 +193,9 @@ export const initialField: Item[] = [
 ]
 
 export type Recipie = {
-    first: string,
-    second: string,
-    result: string
+    first: keyof typeof itemToTitle,
+    second: keyof typeof itemToTitle,
+    result: keyof typeof itemToTitle
 }
 
 export const recipies: Recipie[] = [
@@ -165,12 +225,12 @@ export const recipies: Recipie[] = [
         result: "dm_dead"
     },
     {
-        first: "tester",
+        first: "food",
         second: "work",
         result: "persimmon"
     },
     {
-        first: "tester",
+        first: "blob",
         second: "forest",
         result: "ants"
     },
@@ -193,11 +253,6 @@ export const recipies: Recipie[] = [
         first: "negative",
         second: "hat",
         result: "dm"
-    },
-    {
-        first: "ants",
-        second: "persimmon",
-        result: "persimmon_with_ants"
     },
     {
         first: "money",
@@ -275,8 +330,8 @@ export const recipies: Recipie[] = [
         result: "wolfpack_4"
     },
     {
-        first: "wolfpack_4",
-        second: "evil",
+        first: "dark_fantasy",
+        second: "universe",
         result: "victory"
     },
     {
@@ -306,12 +361,37 @@ export const recipies: Recipie[] = [
     },
     {
         first: "frog",
-        second: "water",
+        second: "food",
         result: "lobster"
     },
     {
-        first: "blobster",
+        first: "water",
         second: "frog",
+        result: "il"
+    },
+    {
+        first: "negative",
+        second: "water",
+        result: "hot_sause"
+    },
+    {
+        first: "hot_sause",
+        second: "dream",
+        result: "nightmare_potion"
+    },
+    {
+        first: "nightmare_potion",
+        second: "il",
+        result: "il_sleep"
+    },
+    {
+        first: "il",
+        second: "work",
+        result: "dream"
+    },
+    {
+        first: "il_sleep",
+        second: "blobster",
         result: "il_blob"
     },
     {
@@ -461,11 +541,21 @@ export const recipies: Recipie[] = [
     },
     {
         first: "ovalolikiy",
-        second: "crusader",
+        second: "tire_keeper",
         result: "orden"
     },
     {
-        first: "orden",
+        first: "crusader",
+        second: "tire",
+        result: "tire_keeper"
+    },
+    {
+        first: "mine",
+        second: "hammer",
+        result: "minecraft"
+    },
+    {
+        first: "minecraft",
         second: "booblick",
         result: "evil"
     },
@@ -488,5 +578,258 @@ export const recipies: Recipie[] = [
         first: "anton",
         second: "apple",
         result: "ogr"
-    }
+    },
+    {
+        first: 'police',
+        second: 'car',
+        result: 'penalty'
+    },
+    // BDDHISM
+    {
+        first: "minus",
+        second: "negative",
+        result: "positive"
+    },
+    {
+        first: "positive",
+        second: "negative",
+        result: "balance"
+    },
+    {
+        first: "tulpa",
+        second: "tea_goblin",
+        result: 'universe'
+    },
+    {
+        first: "dm_dead",
+        second: "buddha",
+        result: "soul"
+    },
+    {
+        first: 'balance',
+        second: 'fingerprint',
+        result: 'buddha'
+    },
+    {
+        first: 'pivko',
+        second: 'anton',
+        result: 'police'
+    },
+    {
+        // double
+        first: 'dm',
+        second: 'police',
+        result: 'fingerprint'
+    },
+    // PERM
+    {
+        first: "dm_with_tea",
+        second: "ears",
+        result: "tea_goblin"
+    },
+    {
+        first: "hat",
+        second: "island",
+        result: "panama"
+    },
+    {
+        first: "panama",
+        second: "nagorny",
+        result: "perm_pasport"
+    },
+    {
+        first: "kal",
+        second: "booblick",
+        result: "cup"
+    },
+    {
+        first: "cup",
+        second: "water",
+        result: "cup_of_water"
+    },
+    {
+        first: "cup_of_tea",
+        second: "cup_of_tea",
+        result: "cups_of_tea"
+    },
+    {
+        first: "cups_of_tea",
+        second: "dm",
+        result: "dm_with_tea"
+    },
+    {
+        first: "dm",
+        second: "pivko",
+        result: "tea"
+    },
+    {
+        first: "tea",
+        second: "cup_of_water",
+        result: "cup_of_tea"
+    },
+    {
+        first: 'mountains',
+        second: 'pivko',
+        result: 'nagorny'
+    },
+    {
+        first: 'perm_pasport',
+        second: 'anton',
+        result: 'ears'
+    },
+    {
+        first: 'work',
+        second: 'work',
+        result: 'real_work'
+    },
+    {
+        first: 'work',
+        second: 'hammer',
+        result: 'stones'
+    },
+    {
+        first: 'plain',
+        second: 'stones',
+        result: 'mountains'
+    },
+    {
+        first: 'dm',
+        second: 'real_work',
+        result: 'hammer'
+    },
+    {
+        first: 'booblick',
+        second: 'ears',
+        result: 'booblic_with_ears'
+    },
+    {
+        first: 'soul',
+        second: 'love',
+        result: 'tulpa'
+    },
+    {
+        first: "pivko",
+        second: "pchsp",
+        result: 'tavern'
+    },
+    {
+        first: "mountains",
+        second: "3-in-line",
+        result: 'mine'
+    },
+    {
+        first: 'orden',
+        second: 'mine',
+        result: 'castle'
+    },
+    {
+        first: 'hammer',
+        second: 'car',
+        result: 'tire'
+    },
+    {
+        first: 'penalty',
+        second: 'money',
+        result: 'few_money'
+    }, 
+    {
+        first: 'hammer',
+        second: 'apple',
+        result: 'mashed_apple'
+    },
+    {
+        first: 'mashed_apple',
+        second: 'food',
+        result: 'pie'
+    },
+    {
+        first: 'pie',
+        second: 'cup_of_tea',
+        result: 'tea_with_pie'
+    },
+    {
+        first: 'ears',
+        second: 'car',
+        result: 'music'
+    },
+    {
+        first: 'music',
+        second: 'few_money',
+        result: 'rep'
+    },
+    {
+        first: 'rep',
+        second: 'wolfpack_4',
+        result: 'rep_people'
+    },
+    {
+        first: 'rep_people',
+        second: '3-7',
+        result: 'band'
+    },
+    {
+        first: 'band',
+        second: 'tea_with_pie',
+        result: 'pchsp'
+    },
+    {
+        first: 'calculator',
+        second: 'dm_dead_four',
+        result: '4'
+    },
+    {
+        first: '4',
+        second: 'cross',
+        result: '4+'
+    },
+    {
+        first: '4',
+        second: 'minus',
+        result: '4-'
+    },
+    {
+        first: '4-',
+        second: '1',
+        result: '3'
+    },
+    {
+        first: '4+',
+        second: '3',
+        result: '7'
+    },
+    {
+        first: '7',
+        second: '7',
+        result: '77'
+    },
+    {
+        first: '77',
+        second: '7',
+        result: '3-7'
+    },
+    {
+        first: '3',
+        second: '3',
+        result: '33'
+    },
+    {
+        first: '33',
+        second: '3',
+        result: '3-in-line'
+    },
+    {
+        first: 'fantasy',
+        second: 'evil',
+        result: 'dark_fantasy'
+    },
+    {
+        first: 'tavern',
+        second: 'castle',
+        result: 'fantasy'
+    },
+    {
+        first: 'blob',
+        second: 'hammer',
+        result: '1'
+    },
 ];
