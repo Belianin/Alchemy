@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "watch": "webpack --watch",
+    "serve": "webpack serve --mode development",
     "build": "webpack --mode production",
     "deploy": "gh-pages -d dist"
   },
@@ -14,17 +15,18 @@
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
+    "gh-pages": "^6.0.0",
     "html-webpack-plugin": "^5.5.3",
     "install": "^0.13.0",
+    "live-server": "^1.2.2",
     "nodemon": "^3.0.1",
     "npm": "^10.2.0",
     "style-loader": "^3.3.3",
     "ts-loader": "^9.5.0",
-    "typescript": "^5.2.2",
+    "typescript": "^5.8.3",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1",
-    "gh-pages": "^6.0.0"
+    "webpack-dev-server": "^4.15.1"
   },
   "homepage": "https://belianin.github.io/Alchemy"
 }
