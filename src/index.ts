@@ -49,6 +49,9 @@ function discoverElement(name: string, onclick: (name: string) => void) {
   image.style.width = `${spriteSize}px`;
   image.style.height = `${spriteSize}px`;
   image.style.display = "block";
+  image.addEventListener("dragstart", (e) => {
+    e.dataTransfer.setData("text/plain", name);
+  });
   result.appendChild(image);
 
   const text = document.createElement("span");
@@ -132,6 +135,10 @@ class Game implements IGame {
     canvas.addEventListener("touchstart", this.handleOnTouch.bind(this));
     canvas.addEventListener("touchmove", this.handleTouchMove.bind(this));
     canvas.addEventListener("touchend", this.handleMouseLeave.bind(this));
+    canvas.addEventListener("drop", this.handleDrop.bind(this));
+    canvas.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
 
     this.ctx = canvas.getContext("2d");
     this.ctx.imageSmoothingEnabled = false;
@@ -140,15 +147,33 @@ class Game implements IGame {
     setInterval(this.draw.bind(this), 40);
   }
 
-  spawnElement(element: string) {
-    const x = Math.random() * (width - spriteSize);
-    const y = Math.random() * (height - spriteSize);
+  handleDrop(e: DragEvent) {
+    e.preventDefault();
 
-    this.field.push({
+    const element = e.dataTransfer.getData("text/plain");
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left - spriteSize / 2;
+    const y = e.clientY - rect.top - spriteSize / 2;
+
+    const item = this.spawnElement(element, x, y);
+    this.selectedItem = item;
+    this.handleMouseLeave();
+  }
+
+  spawnElement(element: string, x?: number, y?: number) {
+    x = x || Math.random() * (width - spriteSize);
+    y = y || Math.random() * (height - spriteSize);
+
+    const result = {
       id: element,
       x,
       y,
-    });
+    };
+
+    this.field.push(result);
+
+    return result;
   }
 
   discoverRecpie(name: string) {
