@@ -50,7 +50,11 @@ function discoverElement(name: string, onclick: (name: string) => void) {
   image.style.height = `${spriteSize}px`;
   image.style.display = "block";
   image.addEventListener("dragstart", (e) => {
-    e.dataTransfer.setData("text/plain", name);
+    const rect = image.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    e.dataTransfer.setData("text/plain", JSON.stringify({ name, x, y }));
   });
   result.appendChild(image);
 
@@ -149,14 +153,15 @@ class Game implements IGame {
 
   handleDrop(e: DragEvent) {
     e.preventDefault();
+    console.log(e);
 
-    const element = e.dataTransfer.getData("text/plain");
+    const element = JSON.parse(e.dataTransfer.getData("text/plain"));
 
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left - spriteSize / 2;
-    const y = e.clientY - rect.top - spriteSize / 2;
+    const x = e.clientX - rect.left - element.x;
+    const y = e.clientY - rect.top - element.y;
 
-    const item = this.spawnElement(element, x, y);
+    const item = this.spawnElement(element.name, x, y);
     this.selectedItem = item;
     this.handleMouseLeave();
   }
