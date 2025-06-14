@@ -3,13 +3,12 @@ import {
   Recipie,
   initialField,
   recipies as initialRecipies,
-  itemToTitle,
   recipies,
   textures,
 } from "./data";
+import itemToTitle from "./data/itemToTitle";
 import { initSaves } from "./saves";
 import { isIntersect } from "./utils";
-//import Viva from './vivagraph'
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 
@@ -43,6 +42,7 @@ function discoverElement(name: string, onclick: (name: string) => void) {
   const result = document.createElement("div");
   result.style.position = "relative";
   result.className = "found-element";
+  result.id = `element-${name}`;
 
   const image = createElementImage(name);
   image.id = `${name}_img`;
@@ -71,6 +71,20 @@ function discoverElement(name: string, onclick: (name: string) => void) {
   }
 
   knownElements.appendChild(result);
+
+  // const sorted = Array.from(knownElements.children).sort((a, b) => {
+  //   const aOpacity = a.classList.contains("discovered");
+  //   const bOpacity = b.classList.contains("discovered");
+  //   for (let x of a.classList) {
+  //     console.log(x);
+  //   }
+
+  //   if (aOpacity == bOpacity) return a.id.localeCompare(b.id) * 0.5;
+
+  //   if (aOpacity) return -1;
+  //   return 1;
+  // });
+  // knownElements.replaceChildren(...sorted);
 }
 
 function createElementImage(name: string): HTMLElement {
@@ -139,10 +153,10 @@ class Game implements IGame {
 
   discoverRecpie(name: string) {
     discoverElement(name, this.spawnElement.bind(this));
-    // const recipie = this.recipies.find((x) => x.result === name);
-    // this.leftRecipiesCountMap[recipie.first]--;
-    // if (recipie.first !== recipie.second)
-    //   this.leftRecipiesCountMap[recipie.second]--;
+    const recipie = this.recipies.find((x) => x.result === name);
+    this.leftRecipiesCountMap[recipie.first]--;
+    if (recipie.first !== recipie.second)
+      this.leftRecipiesCountMap[recipie.second]--;
     // if (showKnown) {
     //   if (
     //     this.leftRecipiesCountMap[recipie.first] === 0 &&
@@ -155,6 +169,26 @@ class Game implements IGame {
     //   )
     //     document.getElementById(`${recipie.second}_img`).style.opacity = "0.2";
     // }
+
+    if (showKnown) {
+      if (
+        this.leftRecipiesCountMap[recipie.first] === 0 &&
+        document.getElementById(`element-${recipie.first}`)
+      )
+        document
+          .getElementById(`element-${recipie.first}`)
+          .classList.add("discovered");
+      // document.getElementById(`element-${recipie.first}`).style.opacity =          "0.5";
+      if (
+        this.leftRecipiesCountMap[recipie.second] === 0 &&
+        document.getElementById(`element-${recipie.second}`)
+      )
+        document
+          .getElementById(`element-${recipie.second}`)
+          .classList.add("discovered");
+      // document.getElementById(`element-${recipie.second}`).style.opacity =          "0.5";
+    }
+
     // const p = document.createElement("p");
     // p.innerText = `${itemToTitle[recipie.first]} + ${
     //   itemToTitle[recipie.second]
@@ -220,18 +254,17 @@ class Game implements IGame {
       this.ctx.drawImage(resultTexture, item.x, item.y);
       const title = itemToTitle[item.id];
       const textSize = this.ctx.measureText(title);
-      this.ctx.font = "12px Consolas";
+
+      const text = showKnown
+        ? `${itemToTitle[item.id]} ${this.leftRecipiesCountMap[item.id] || ""}`
+        : itemToTitle[item.id];
+
+      this.ctx.font = "12px Consolas"; // todo перенести?
       this.ctx.fillText(
-        itemToTitle[item.id],
+        text,
         item.x + (spriteSize / 2 - textSize.width / 2),
         item.y + spriteSize + 12
       );
-      if (showKnown)
-        this.ctx.fillText(
-          (this.leftRecipiesCountMap[item.id] || 0).toString(),
-          item.x,
-          item.y + spriteSize + 24
-        );
     }
   }
 

@@ -58,6 +58,8 @@ svg {
   height: 768px;
   padding: 16px;
   gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .found-element {
@@ -118,4 +120,8 @@ svg {
 
 .danger {
   background-color: darkred;
+}
+
+.discovered {
+  opacity: 0.5;
 }
