@@ -171,7 +171,7 @@ class Game implements IGame {
       y,
     };
 
-    this.field.push(result);
+    this.field = [result, ...this.field];
 
     return result;
   }
