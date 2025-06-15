@@ -24,14 +24,12 @@ canvas {
   box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
-p {
-  margin: 4px 4px 4px 4px;
-}
-
 .main-flex {
   display: flex;
   gap: 16px;
   align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .header {
@@ -54,12 +52,12 @@ svg {
   display: flex;
   flex-wrap: wrap;
   align-content: start;
-  flex: 1 1;
   height: 768px;
   padding: 16px;
+  min-width: 96px;
+  max-width: 768px;
+  flex: 1 0;
   gap: 8px;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .found-element {
@@ -115,10 +113,11 @@ svg {
 .buttons-pannel {
   display: flex;
   gap: 8px;
+  margin-bottom: 8px;
   margin-top: 8px;
 }
 
-.danger {
+button.danger {
   background-color: darkred;
 }
 
