@@ -27,7 +27,7 @@ canvas {
 .main-flex {
   display: flex;
   gap: 16px;
-  align-items: flex-start;
+  align-items: flex-end;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -56,8 +56,8 @@ svg {
   padding: 16px;
   min-width: 96px;
   max-width: 768px;
-  flex: 1 0;
   gap: 8px;
+  flex: 1 0;
 }
 
 .found-element {

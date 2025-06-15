@@ -36,7 +36,12 @@ const getRecepieText = (recipie: Recipie) =>
 //     showKnown = (e.target as any).checked as boolean
 // }
 
-const knownElements = document.getElementById("found-element");
+const knownElements = document.getElementById("found-elements");
+// window.addEventListener("resize", (e) => {
+//   knownElements.style.width = `${
+//     64 * Math.ceil(knownElements.offsetWidth / 64)
+//   }px`;
+// });
 
 function discoverElement(name: string, onclick: (name: string) => void) {
   const result = document.createElement("div");
@@ -187,18 +192,6 @@ class Game implements IGame {
     this.leftRecipiesCountMap[recipie.first]--;
     if (recipie.first !== recipie.second)
       this.leftRecipiesCountMap[recipie.second]--;
-    // if (showKnown) {
-    //   if (
-    //     this.leftRecipiesCountMap[recipie.first] === 0 &&
-    //     document.getElementById(`${recipie.first}_img`)
-    //   )
-    //     document.getElementById(`${recipie.first}_img`).style.opacity = "0.2";
-    //   if (
-    //     this.leftRecipiesCountMap[recipie.second] === 0 &&
-    //     document.getElementById(`${recipie.second}_img`)
-    //   )
-    //     document.getElementById(`${recipie.second}_img`).style.opacity = "0.2";
-    // }
 
     if (showKnown) {
       if (
@@ -208,7 +201,6 @@ class Game implements IGame {
         document
           .getElementById(`element-${recipie.first}`)
           .classList.add("discovered");
-      // document.getElementById(`element-${recipie.first}`).style.opacity =          "0.5";
       if (
         this.leftRecipiesCountMap[recipie.second] === 0 &&
         document.getElementById(`element-${recipie.second}`)
@@ -216,17 +208,7 @@ class Game implements IGame {
         document
           .getElementById(`element-${recipie.second}`)
           .classList.add("discovered");
-      // document.getElementById(`element-${recipie.second}`).style.opacity =          "0.5";
     }
-
-    // const p = document.createElement("p");
-    // p.innerText = `${itemToTitle[recipie.first]} + ${
-    //   itemToTitle[recipie.second]
-    // } = ${itemToTitle[recipie.result]}`;
-    // document.getElementById("recipies").appendChild(p);
-    // graph.addNode(recipie.result, {url : `/images/${recipie.result}.png`})
-    // graph.addLink(recipie.first, recipie.result)
-    // graph.addLink(recipie.second, recipie.result)
   }
 
   load(items: Item[], found: Set<string>) {
