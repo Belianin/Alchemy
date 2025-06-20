@@ -271,7 +271,9 @@ class Game implements IGame {
       const textSize = this.ctx.measureText(title);
 
       const text = showKnown
-        ? `${itemToTitle[item.id]} ${this.leftRecipiesCountMap[item.id] || ""}`
+        ? `${itemToTitle[item.id]} (${
+            this.leftRecipiesCountMap[item.id] || "0"
+          })`
         : itemToTitle[item.id];
 
       this.ctx.font = "12px Consolas"; // todo перенести?
