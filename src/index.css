@@ -58,6 +58,7 @@ svg {
   max-width: 768px;
   gap: 8px;
   flex: 1 0;
+  overflow-y: scroll;
 }
 
 .found-element {
