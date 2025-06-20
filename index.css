@@ -125,3 +125,7 @@ button.danger {
 .discovered {
   opacity: 0.5;
 }
+
+.bonus {
+  background: linear-gradient(45deg, rgb(70, 221, 255), rgb(183, 49, 255));
+}
