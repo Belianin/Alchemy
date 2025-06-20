@@ -189,25 +189,32 @@ class Game implements IGame {
   discoverRecpie(name: string) {
     discoverElement(name, this.spawnElement.bind(this));
     const recipie = this.recipies.find((x) => x.result === name);
+    if (!recipie) return;
     this.leftRecipiesCountMap[recipie.first]--;
     if (recipie.first !== recipie.second)
       this.leftRecipiesCountMap[recipie.second]--;
 
     if (showKnown) {
       if (
-        this.leftRecipiesCountMap[recipie.first] === 0 &&
+        this.leftRecipiesCountMap[recipie.first] <= 0 &&
         document.getElementById(`element-${recipie.first}`)
       )
         document
           .getElementById(`element-${recipie.first}`)
           .classList.add("discovered");
       if (
-        this.leftRecipiesCountMap[recipie.second] === 0 &&
+        this.leftRecipiesCountMap[recipie.second] <= 0 &&
         document.getElementById(`element-${recipie.second}`)
       )
         document
           .getElementById(`element-${recipie.second}`)
           .classList.add("discovered");
+
+      const hasRecepies = !!this.recipies.find(
+        (x) => x.first === name || x.second === name
+      );
+      if (!hasRecepies)
+        document.getElementById(`element-${name}`).classList.add("bonus");
     }
   }
 
@@ -216,6 +223,7 @@ class Game implements IGame {
     console.log(items);
     this.field = items;
     this.found = found;
+    document.getElementById("found-elements").innerHTML = null;
 
     this.leftRecipiesCountMap = {};
     for (let recipie of this.recipies) {
@@ -239,11 +247,6 @@ class Game implements IGame {
           : 1;
       }
     }
-
-    discoverElement("water", this.spawnElement.bind(this));
-    discoverElement("wind", this.spawnElement.bind(this));
-    discoverElement("negative", this.spawnElement.bind(this));
-    discoverElement("work", this.spawnElement.bind(this));
 
     for (let foundItem of found) {
       this.discoverRecpie(foundItem);
@@ -379,7 +382,14 @@ class Game implements IGame {
 
 export const game = new Game(initialRecipies);
 (window as any).game = game;
-game.load(initialField, new Set<string>());
+const field = [...initialField];
+console.log(new Set<string>(...[field.map((x) => x.id)]));
+game.load(field, new Set<string>(...[field.map((x) => x.id)]));
+
+// discoverElement("water", this.spawnElement.bind(this));
+// discoverElement("wind", this.spawnElement.bind(this));
+// discoverElement("negative", this.spawnElement.bind(this));
+// discoverElement("work", this.spawnElement.bind(this));
 initSaves(game);
 
 document.getElementById("clear-button").onclick = () => (game.field = []);

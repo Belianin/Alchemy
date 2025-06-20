@@ -124,11 +124,6 @@ export const recipies: Recipie[] = [
     result: "cigarettes",
   },
   {
-    first: "dm_dead_six",
-    second: "dm_dead_four",
-    result: "portal",
-  },
-  {
     first: "dm_dead_eight",
     second: "dm_dead_two",
     result: "portal",
@@ -142,16 +137,6 @@ export const recipies: Recipie[] = [
     first: "dm_dead_two",
     second: "dm_dead_two",
     result: "dm_dead_four",
-  },
-  {
-    first: "dm_dead_two",
-    second: "dm_dead_four",
-    result: "dm_dead_six",
-  },
-  {
-    first: "dm_dead_six",
-    second: "dm_dead_two",
-    result: "dm_dead_eight",
   },
   {
     first: "dm_dead_four",
