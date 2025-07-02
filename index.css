@@ -74,18 +74,12 @@ svg {
   cursor: pointer;
   width: 80px;
   height: 80px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.found-recpts {
-  height: 800px;
-  overflow-y: scroll;
-  font-size: 14px;
-  background-color: white;
-  flex: 1;
-}
-
-.prev-goal {
-  text-decoration: line-through;
+.found-element.highlight {
+  box-shadow: 0 0 20px 8px #fffbe0;
+  transform: scale(1.05);
 }
 
 .container {
