@@ -37,17 +37,76 @@ const getRecepieText = (recipie: Recipie) =>
 // }
 
 const knownElements = document.getElementById("found-elements");
+
+// let highlightedItems = [];
+
+// knownElements.addEventListener("mouseover", (event) => {
+//   let target = event.target as HTMLDivElement;
+//   if (!target.classList.contains("found-element")) {
+//     target = target.closest("found-element");
+//     if (!target) return;
+//   }
+//   console.log(target);
+//   const id = target.id;
+//   console.log(id);
+
+//   highlightedItems = Array.from(
+//     knownElements.querySelectorAll(".found-element")
+//   ).filter(
+//     (el) =>
+//       el.getAttribute("parent1") === id || el.getAttribute("parent2") === id
+//   );
+//   console.log(highlightedItems);
+
+//   highlightedItems.forEach((el) => el.classList.add("highlight"));
+// });
+
+// knownElements.addEventListener("mouseout", (event) => {
+//   const target = event.target as HTMLDivElement;
+//   if (target.classList.contains("found-element")) {
+//     highlightedItems.forEach((el) => el.classList.remove("highlight"));
+//     highlightedItems = [];
+//   }
+// });
+
 // window.addEventListener("resize", (e) => {
 //   knownElements.style.width = `${
 //     64 * Math.ceil(knownElements.offsetWidth / 64)
 //   }px`;
 // });
 
-function discoverElement(name: string, onclick: (name: string) => void) {
+function discoverElement(
+  name: string,
+  recepie: Recipie | undefined,
+  onclick: (name: string) => void
+) {
   const result = document.createElement("div");
   result.style.position = "relative";
   result.className = "found-element";
   result.id = `element-${name}`;
+  if (recepie) {
+    result.setAttribute("parent1", `element-${recepie.first}`);
+    result.setAttribute("parent2", `element-${recepie.second}`);
+  }
+
+  let highlightedItems = [];
+
+  result.addEventListener("mouseover", (event) => {
+    highlightedItems = Array.from(
+      knownElements.querySelectorAll(".found-element")
+    ).filter(
+      (el) =>
+        el.getAttribute("parent1") === result.id ||
+        el.getAttribute("parent2") === result.id
+    );
+
+    highlightedItems.forEach((el) => el.classList.add("highlight"));
+  });
+
+  knownElements.addEventListener("mouseout", (event) => {
+    highlightedItems.forEach((el) => el.classList.remove("highlight"));
+    highlightedItems = [];
+  });
 
   const image = createElementImage(name);
   image.id = `${name}_img`;
@@ -153,6 +212,7 @@ class Game implements IGame {
     this.ctx.imageSmoothingEnabled = false;
     this.tick = 0;
 
+    // todo requestAnimationFrame
     setInterval(this.draw.bind(this), 40);
   }
 
@@ -187,8 +247,8 @@ class Game implements IGame {
   }
 
   discoverRecpie(name: string) {
-    discoverElement(name, this.spawnElement.bind(this));
     const recipie = this.recipies.find((x) => x.result === name);
+    discoverElement(name, recipie, this.spawnElement.bind(this));
     if (!recipie) return;
     this.leftRecipiesCountMap[recipie.first]--;
     if (recipie.first !== recipie.second)
