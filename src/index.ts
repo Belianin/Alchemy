@@ -21,9 +21,7 @@ canvas.height = height;
 let showKnown = true;
 
 const getRecepieText = (recipie: Recipie) =>
-  `${itemToTitle[recipie.first]} + ${itemToTitle[recipie.second]} = ${
-    itemToTitle[recipie.result]
-  }`;
+  `${itemToTitle[recipie.first]} + ${itemToTitle[recipie.second]}`;
 
 // const showLeftInput = document.getElementById('show-count-left') as HTMLInputElement;
 // const showKnownInput = document.getElementById('show-known') as HTMLInputElement;
@@ -138,6 +136,8 @@ function discoverElement(
     const tooltip = document.createElement("div");
     tooltip.className = "tooltiptext";
     tooltip.innerText = getRecepieText(recipie);
+    tooltip.addEventListener("click", (e) => e.preventDefault());
+    tooltip.addEventListener("mousedown", (e) => e.preventDefault());
     result.appendChild(tooltip);
   }
 
@@ -258,17 +258,21 @@ class Game implements IGame {
       if (
         this.leftRecipiesCountMap[recipie.first] <= 0 &&
         document.getElementById(`element-${recipie.first}`)
-      )
-        document
-          .getElementById(`element-${recipie.first}`)
-          .classList.add("discovered");
+      ) {
+        const el = document.getElementById(`element-${recipie.first}`);
+        el.children[0].classList.add("discovered");
+        el.style.color = "lightgray";
+        el.style.backgroundColor = "rgb(90, 90, 90)";
+      }
       if (
         this.leftRecipiesCountMap[recipie.second] <= 0 &&
         document.getElementById(`element-${recipie.second}`)
-      )
-        document
-          .getElementById(`element-${recipie.second}`)
-          .classList.add("discovered");
+      ) {
+        const el = document.getElementById(`element-${recipie.second}`);
+        el.children[0].classList.add("discovered");
+        el.style.color = "lightgray";
+        el.style.backgroundColor = "rgb(90, 90, 90)";
+      }
 
       const hasRecepies = !!this.recipies.find(
         (x) => x.first === name || x.second === name
