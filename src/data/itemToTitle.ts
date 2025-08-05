@@ -183,6 +183,7 @@ const itemToTitle = {
   exp_x2: "Двойной опыт",
   quest: "Квест",
   rats: "Крысы",
+  online_kube: "Куб Онлайна",
 } as const;
 
 export default itemToTitle;
