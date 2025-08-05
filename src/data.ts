@@ -2,7 +2,7 @@ import itemToTitle from "./data/itemToTitle";
 
 const itemToAnimationFrameCount: Record<string, number> = {
   negative: 4,
-  online_kube: 4,
+  online_kube: 7,
   calculator: 5,
   powered_kal: 7,
 };
