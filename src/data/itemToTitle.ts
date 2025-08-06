@@ -184,6 +184,7 @@ const itemToTitle = {
   quest: "Квест",
   rats: "Крысы",
   online_kube: "Куб Онлайна",
+  infra_oval: "Овал Инфраструктуры",
 } as const;
 
 export default itemToTitle;

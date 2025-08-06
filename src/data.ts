@@ -3,6 +3,7 @@ import itemToTitle from "./data/itemToTitle";
 const itemToAnimationFrameCount: Record<string, number> = {
   negative: 4,
   online_kube: 7,
+  infra_oval: 3,
   calculator: 5,
   powered_kal: 7,
 };
@@ -944,8 +945,13 @@ export const recipies: Recipie[] = [
     result: "moon_and_stars",
   },
   {
-    first: "online_prince",
-    second: "minecraft",
+    first: "tester",
+    second: "work",
     result: "online_kube",
+  },
+  {
+    first: "online_kube",
+    second: "work",
+    result: "infra_oval",
   },
 ];
