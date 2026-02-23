@@ -945,13 +945,58 @@ export const recipies: Recipie[] = [
     result: "moon_and_stars",
   },
   {
-    first: "tester",
-    second: "work",
+    first: "anton",
+    second: "it",
     result: "online_kube",
   },
   {
-    first: "online_kube",
-    second: "work",
+    first: "dm",
+    second: "it",
     result: "infra_oval",
+  },
+  {
+    first: "il",
+    second: "forest",
+    result: "mushroom",
+  },
+  {
+    first: "mushroom",
+    second: "beer",
+    result: "mushroom_cocktail",
+  },
+  {
+    first: "blobster",
+    second: "penalty",
+    result: "tape",
+  },
+  {
+    first: "beer_alkofree",
+    second: "anton",
+    result: "empty_bottle",
+  },
+  {
+    first: "empty_bottle",
+    second: "empty_bottle",
+    result: "empty_bottles",
+  },
+  {
+    first: "empty_bottles",
+    second: "tape",
+    result: "glass_body",
+  },
+  {
+    first: "glass_body",
+    second: "beer",
+    result: "beer_golem",
+  },
+  {
+    first: "beer_golem",
+    second: "smoke_elemental",
+    result: "creature",
+  },
+  {
+    first: "soul",
+    second: "powered_kal",
+    result: "smoke_elemental",
   },
 ];

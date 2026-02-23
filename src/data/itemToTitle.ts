@@ -185,6 +185,15 @@ const itemToTitle = {
   rats: "Крысы",
   online_kube: "Куб Онлайна",
   infra_oval: "Овал Инфраструктуры",
+  mushroom: "Гриб",
+  mushroom_cocktail: "Грибной коктейль",
+  tape: "Скотч",
+  smoke_elemental: "Дымный элементаль",
+  empty_bottle: "Пустая бутылка",
+  empty_bottles: "Пустые бутылки",
+  glass_body: "Стеклянное тело",
+  beer_golem: "Пивной голем",
+  creature: "Сущевство",
 } as const;
 
 export default itemToTitle;
